@@ -1,3 +1,31 @@
+//bash 1. create packege.json
+//bash 2. install dependancies
+//bash 3. git Init
+//bash 4. mkdir .env & .gitignore
+//bash 5. echo secret, PORT,  to .env
+//bash 6. echo .env to git ignore
+//bash 7. write this file
+//bash 8. mkdir - views, public, controllers, models, layouts
+//bash 9. touch index.js -> controllers(create file)
+//bash 9. touch index.ejs -> views(create file)
+//bash 10. touch layout.ejs -> layouts(create file)
 const express = require("express");
 const app = express();
-const expressLayouts
+const expressLayouts = require('express-ejs-layouts');
+
+app.set('view engine', 'ejs');
+// app.set('views', __dirname + "/views");
+app.set('views', __dirname + "/views");
+
+//layout file, every single file is going to be put inside of this file
+//so we don't have to duplicate all the beginnig HTML and ending HTML
+app.set('layout', 'layouts/layout');
+app.use(expressLayouts);
+app.use(express.static('public'));
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}...`);
+});
+
+app.use("/", require("./controllers/index"));
