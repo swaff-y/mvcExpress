@@ -40,3 +40,4 @@ db.on('error', error => console.error( error ))
 db.once('open', () => console.log( "Connected to mongoose..." ))
 
 app.use("/", require("./controllers/index"));
+app.use("/authors", require("./controllers/authors"));
