@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Author = require('../models/author.js');
 
 module.exports = router;
 
@@ -10,7 +11,7 @@ router.get('/', (req,res)=>{
 
 //New Author
 router.get('/new', (req, res)=>{
-  res.render('authors/new')
+  res.render('authors/new', { author: new Author()})
 })
 
 //Create
