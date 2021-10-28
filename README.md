@@ -8,6 +8,7 @@
 5. *bash*
 6. mongoose
 7. --save-dev dotenv
+8. body-parser
 
 ## Notes
 1. "start":"node server.js" -> for production
