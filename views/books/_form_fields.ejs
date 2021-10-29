@@ -1,6 +1,8 @@
 <div class="">
   <label for="booksTitle">Title</label>
-  <input id="booksTitle" type="text" name="title" value="<%= book.title %>">
+  <input id="booksTitle" type="text" name="title" value="
+    <%= book.title %>
+  ">
 </div>
 
 <div class="">
@@ -25,7 +27,9 @@
 
 <div class="">
   <label for="booksPageCount">Page Count</label>
-  <input id="booksPageCount" type="number" min="1" name="pageCount" value="<%= book.pageCount %>">
+  <input id="booksPageCount" type="number" min="1" name="pageCount" value="
+    <%= book.pageCount %>
+  ">
 </div>
 
 <div class="">
@@ -35,5 +39,7 @@
 
 <div class="">
   <label for="booksDescription">Description</label>
-  <textarea id="booksDescription" name="description" rows="8" cols="80"><%= book.description %></textarea>
+  <textarea id="booksDescription" name="description" rows="8" cols="80">
+    <%= book.description %>
+  </textarea>
 </div>
