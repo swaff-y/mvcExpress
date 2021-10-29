@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/book.js');
+const Author = require('../models/author.js');
 
 module.exports = router;
 
@@ -8,8 +9,8 @@ module.exports = router;
 router.get('/', async (req,res)=>{
   let searchOptions = {}
 
-  if(req?.query?.name){
-    searchOptions.name = new RegExp(req.query.name, 'i');
+  if(req?.query?.title){
+    searchOptions.title = new RegExp(req.query.title, 'i');
   }
 
   try {
@@ -24,15 +25,31 @@ router.get('/', async (req,res)=>{
   }
 })
 
-//New Author
-router.get('/new', (req, res)=>{
+//New Book
+router.get('/new', async (req, res)=>{
+  try {
+    const authors = await Author.find({});
+    const book = new Book();
+    res.render('books/new', {
+      authors: authors,
+      book: book
+    })
+  } catch(err) {
+    res.redirect("/books")
+  }
   res.render('books/new', { book: new Book()})
 })
 
 //Create
 router.post('/', async (req, res)=>{
   const book = new Book({
-    name: req.body.name
+    title: req?.body?.title || null,
+    description: req?.body?.description || null,
+    publishedDate: req?.body?.publishedDate || null,
+    pageCount: req?.body?.pageCount || null,
+    createdAt: req?.body?.createdAt || null,
+    coverImageName: req?.body?.coverImageName || null,
+    author: req?.body?.author || null,
   });
 
   try{
