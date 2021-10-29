@@ -1,8 +1,12 @@
 <h2>Search Authors</h2>
 
+<% if(searchOptions) {%>
+  <% soName = searchOptions.name %>
+<% }%>
+
 <form class="" action="/authors" method="GET">
   <label for="">name</label>
-  <input type="text" name="name" value="<%= searchOptions.name %>">
+  <input type="text" name="name" value="<%= soName %>">
   <button type="submit" name="button">Search</button>
 </form>
 <br>

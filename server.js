@@ -43,3 +43,4 @@ db.once('open', () => console.log( "Connected to mongoose..." ))
 
 app.use("/", require("./controllers/index"));
 app.use("/authors", require("./controllers/authors"));
+app.use("/books", require("./controllers/books"));
