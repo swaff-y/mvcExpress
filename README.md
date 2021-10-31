@@ -9,6 +9,7 @@
 6. mongoose
 7. --save-dev dotenv
 8. body-parser
+9. multer
 
 ## Notes
 1. "start":"node server.js" -> for production

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Book = require('../models/book.js');
 const Author = require('../models/author.js');
+const multer = require('multer');
+const path = require('path');
 
 module.exports = router;
 
@@ -27,39 +29,51 @@ router.get('/', async (req,res)=>{
 
 //New Book
 router.get('/new', async (req, res)=>{
-  try {
-    const authors = await Author.find({});
-    const book = new Book();
-    res.render('books/new', {
-      authors: authors,
-      book: book
-    })
-  } catch(err) {
-    res.redirect("/books")
+  renderNewPage(res, new Book())
+})
+
+
+const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+const uploadPath = path.join('public', Book.coverImageBasePath);
+const upload = multer({
+  dest: uploadPath,
+  fileFilter: (req, file, callback) => {
+    callback(null, imageMimeTypes.includes(file.mimetype))
   }
-  res.render('books/new', { book: new Book()})
 })
 
 //Create
-router.post('/', async (req, res)=>{
+router.post('/', upload.single('cover'), async (req, res)=>{
+  const fileName = await req.file ? req.file.filename : null;
   const book = new Book({
     title: req?.body?.title || null,
-    description: req?.body?.description || null,
-    publishedDate: req?.body?.publishedDate || null,
-    pageCount: req?.body?.pageCount || null,
-    createdAt: req?.body?.createdAt || null,
-    coverImageName: req?.body?.coverImageName || null,
     author: req?.body?.author || null,
+    publishedDate: new Date(req?.body?.publishedDate) || null,
+    pageCount: req?.body?.pageCount || null,
+    coverImageName: fileName,
+    description: req?.body?.description || null,
   });
 
   try{
     const newBook = await book.save();
-    // res.redirect(`authors/${newAuthor.id}`);
+    // res.redirect(`books/${newBook.id}`);
     res.redirect(`books`);
   }catch{
-    res.render('books/new', {
-      book: book,
-      errorMessage: "Error creating book"
-    })
+    renderNewPage(res, book, true);
   }
 })
+
+async function renderNewPage(res, book, hasError = false) {
+  try {
+    const authors = await Author.find({});
+    const params = {
+      authors: authors,
+      book: book
+    }
+    // const book = new Book();
+    if(hasError) params.errorMessage = "Error creating book";
+    res.render('books/new', params)
+  } catch(err) {
+    res.redirect("/books")
+  }
+}
