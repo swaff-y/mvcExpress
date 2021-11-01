@@ -4,10 +4,11 @@ const Book = require('../models/book.js');
 const Author = require('../models/author.js');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = router;
 
-//All Authors
+//All Books
 router.get('/', async (req,res)=>{
   let searchOptions = {}
 
@@ -30,9 +31,9 @@ router.get('/', async (req,res)=>{
 //New Book
 router.get('/new', async (req, res)=>{
   renderNewPage(res, new Book())
-})
+});
 
-
+//File upload - Multer
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
 const uploadPath = path.join('public', Book.coverImageBasePath);
 const upload = multer({
@@ -40,7 +41,7 @@ const upload = multer({
   fileFilter: (req, file, callback) => {
     callback(null, imageMimeTypes.includes(file.mimetype))
   }
-})
+});
 
 //Create
 router.post('/', upload.single('cover'), async (req, res)=>{
@@ -59,9 +60,21 @@ router.post('/', upload.single('cover'), async (req, res)=>{
     // res.redirect(`books/${newBook.id}`);
     res.redirect(`books`);
   }catch{
+    if(book.coverImageName){
+      removeBookCover(book.coverImageName);
+    }
     renderNewPage(res, book, true);
   }
-})
+
+});
+
+function removeBookCover(fileName){
+  fs.unlink(path.join(uploadPath, fileName), err => {
+     if(err){
+       console.log(err);
+     }
+  })
+}
 
 async function renderNewPage(res, book, hasError = false) {
   try {

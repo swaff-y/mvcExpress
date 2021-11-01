@@ -1,11 +1,26 @@
 <h2>Search Books</h2>
 
 <form class="" action="/books" method="GET">
-  <label for="">name</label>
-  <input type="text" name="name" value="<%= searchOptions.name %>">
+  <div class="">
+    <label for="booksSearchTitle">Title</label>
+    <input type="text" id="booksSearchTitle" name="title" value="<%= searchOptions.title %>">
+  </div>
+  <div class="">
+    <label for="booksSearchPublishedAfter">Published After</label>
+    <input type="date" id="booksSearchPublishedAfter" name="publishedAfter" value="<%= searchOptions.publishedAfter %>">
+  </div>
+  <div class="">
+    <label for="booksSearchPublishedBefore">Published Before</label>
+    <input type="date" id="booksSearchPublishedBefore" name="publishedBefore" value="<%= searchOptions.publishedBefore %>">
+  </div>
+
   <button type="submit" name="button">Search</button>
 </form>
+
 <br>
-<% books.forEach(book => { %>
-  <div><%= book.name  %></div>
-<% }) %>
+
+<div className="">
+  <% books.forEach(book => { %>
+    <img width="150" height="100" src="<%= book.coverImagePath %>" alt="">
+  <% }) %>
+</div>
