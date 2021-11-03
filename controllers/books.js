@@ -10,15 +10,23 @@ module.exports = router;
 
 //All Books
 router.get('/', async (req,res)=>{
-  let searchOptions = {}
+  let query = Book.find();
 
-  if(req?.query?.title){
-    searchOptions.title = new RegExp(req.query.title, 'i');
+  if(req.query.title){
+    query = query.regex('title', new RegExp(req.query.title, 'i'));
+  }
+
+  if(req.query.publishedBefore){
+    query = query.lte('publishedDate', req.query.publishedBefore);
+  }
+
+  if(req.query.publishedAfter){
+    query = query.gte('publishedDate', req.query.publishedAfter);
   }
 
   try {
-    const books = await Book.find(searchOptions);
-    const query = req?.query || "";
+    const books = await query.exec();
+
     res.render('books/index', {
       books: books,
       searchOptions: query
@@ -53,6 +61,7 @@ router.post('/', upload.single('cover'), async (req, res)=>{
     pageCount: req?.body?.pageCount || null,
     coverImageName: fileName,
     description: req?.body?.description || null,
+    // createdAt: new Date()
   });
 
   try{
