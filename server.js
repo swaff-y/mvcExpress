@@ -20,6 +20,7 @@ const port = process.env.PORT || 3000;
 const database = process.env.DATABASE_URL;
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const methodOverride = require('method-override');
 
 app.set('view engine', 'ejs');
 // app.set('views', __dirname + "/views");
@@ -31,7 +32,7 @@ app.set('layout', 'layouts/layout');
 app.use(expressLayouts);
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }));
-
+app.use(methodOverride("_method"));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}...`);
