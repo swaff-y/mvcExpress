@@ -62,9 +62,9 @@ router.get('/:id/edit', async (req, res)=>{
 })
 //update one author
 router.put('/:id',(req, res)=>{
-  res.send("Update Author" + req.params.id)
+  res.send("Update Author" + req.params.id )
 })
 //delete one author
 router.delete('/:id',(req, res)=>{
-  res.send("Delete Author" + req.params.id)
+  res.send("Delete Author" + req.params.id )
 })
