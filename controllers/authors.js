@@ -52,8 +52,13 @@ router.get('/:id',(req, res)=>{
   res.send("Show Author" + req.params.id)
 })
 //edit one author
-router.get('/:id/edit',(req, res)=>{
-  res.send("Edit Author" + req.params.id)
+router.get('/:id/edit', async (req, res)=>{
+  try {
+    const author = await Author.findById(req.params.id);
+    res.render("authors/edit", { author });
+  } catch {
+    res.redirect('/authors');
+  }
 })
 //update one author
 router.put('/:id',(req, res)=>{
