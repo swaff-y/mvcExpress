@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Author = require('../models/author.js');
+const Book = require('../models/book.js');
 
 module.exports = router;
 
@@ -47,9 +48,19 @@ router.post('/', async (req, res)=>{
 })
 
 //Get one author
-router.get('/:id',(req, res)=>{
-  res.send("Show Author" + req.params.id)
+router.get('/:id', async (req, res)=>{
+  try {
+    const author = await Author.findById(req.params.id);
+    const booksByAuthor = await Book.find({ author: author.id }).limit(6).exec();
+    res.render("authors/show", {
+      author,
+      booksByAuthor
+    })
+  } catch {
+    res.redirect("/");
+  }
 })
+
 //edit one author
 router.get('/:id/edit', async (req, res)=>{
   try {
@@ -87,7 +98,8 @@ router.delete('/:id', async (req, res)=>{
     await author.remove();
 
     res.redirect(`/authors`);
-  }catch{
+  }catch(error){
+    console.log( "Delete", error );
     res.redirect(`/authors/${author.id}`);
   }
 })
