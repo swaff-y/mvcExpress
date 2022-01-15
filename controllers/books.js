@@ -36,7 +36,7 @@ router.get('/', async (req,res)=>{
 
 //New Book
 router.get('/new', async (req, res)=>{
-  renderNewPage(res, new Book())
+  renderFormPage(res, new Book(), "new")
 });
 
 //Create
@@ -57,7 +57,7 @@ router.post('/', async (req, res)=>{
     // res.redirect(`books/${newBook.id}`);
     res.redirect(`books`);
   }catch{
-    renderNewPage(res, book, true);
+    renderFormPage(res, book, "new",  true);
   }
 
 });
@@ -72,16 +72,27 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-async function renderNewPage(res, book, hasError = false) {
+//Edit book
+router.get('/:id/edit', async (req, res)=>{
   try {
-    const authors = await Author.find({});
+    const book = await Book.findById(req.params.id);
+    renderFormPage(res, book, "edit");
+  } catch {
+    res.redirect("/");
+  }
+});
+
+async function renderFormPage(res, book, form, hasError = false) {
+  console.log("renderForm");
+  try {
+    const authors = await Author.find();
     const params = {
       authors: authors,
       book: book
     }
     // const book = new Book();
     if(hasError) params.errorMessage = "Error creating book";
-    res.render('books/new', params)
+    res.render(`books/${form}`, params)
   } catch(err) {
     res.redirect("/books")
   }
