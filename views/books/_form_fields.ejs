@@ -1,38 +1,41 @@
-<div class="">
-  <label for="booksTitle">Title</label>
-  <input id="booksTitle" type="text" name="title" value="<%= book.title %>">
+<div class="form-row">
+  <div class="form-item">
+    <label for="booksTitle">Title</label>
+    <input id="booksTitle" type="text" name="title" value="<%= book.title %>">
+  </div>
+  <div class="form-item">
+    <label for="booksAuthor">Author</label>
+    <select id="booksAuthor" name="author">
+    <% authors.forEach(author => { %>
+      <% if(author.id == book.author) {%>
+        <option selected label="<%= author.name %>" value="<%= author.id %>"></option>
+      <% } else { %>
+        <option label="<%= author.name %>" value="<%= author.id %>"></option>
+      <% } %>
+    <% })%>
+    </select>
+  </div>
 </div>
 
-<div class="">
-
-  <label for="booksAuthor">Author</label>
-  <select id="booksAuthor" name="author">
-  <% authors.forEach(author => { %>
-    <% if(author.id == book.author) {%>
-      <option selected label="<%= author.name %>" value="<%= author.id %>"></option>
-    <% } else { %>
-      <option label="<%= author.name %>" value="<%= author.id %>"></option>
-    <% } %>
-  <% })%>
-  </select>
+<div class="form-row">
+  <div class="form-item">
+    <label for="booksPublishedDate">Published Date</label>
+    <input id="booksPublishedDate" type="date" name="publishedDate" value="<%= book?.publishedDate?.toISOString?.()?.split?.('T')?.[0] || "" %>">
+  </div>
+  <div class="form-item">
+    <label for="booksPageCount">Page Count</label>
+    <input id="booksPageCount" type="number" min="1" name="pageCount" value="<%= book.pageCount %>">
+  </div>
 </div>
 
-<div class="">
-  <label for="booksPublishedDate">Published Date</label>
-  <input id="booksPublishedDate" type="date" name="publishedDate" value="<%= book?.publishedDate?.toISOString?.()?.split?.('T')?.[0] || "" %>">
-</div>
 
-<div class="">
-  <label for="booksPageCount">Page Count</label>
-  <input id="booksPageCount" type="number" min="1" name="pageCount" value="<%= book.pageCount %>">
-</div>
-
-<div class="">
-  <label for="booksCover">Cover</label>
-  <input id="booksCover" type="file" class="filepond" name="cover">
-</div>
-
-<div class="">
-  <label for="booksDescription">Description</label>
-  <textarea id="booksDescription" name="description" rows="8" cols="80"><%= book.description %></textarea>
+<div class="form-row">
+  <div class="form-item form-item-no-grow">
+    <label for="booksCover">Cover</label>
+    <input id="booksCover" type="file" class="filepond" name="cover">
+  </div>
+  <div class="form-item">
+    <label for="booksDescription">Description</label>
+    <textarea id="booksDescription" name="description" rows="8" cols="80"><%= book.description %></textarea>
+  </div>
 </div>
