@@ -10,6 +10,16 @@
   margin-bottom: 0.5rem;
 }
 
+.book-row {
+  display:flex;
+  justify-content: space-between;
+  padding-bottom: .2rem;
+}
+
+.form-row-end{
+  justify-content: flex-end;
+}
+
 .form-item {
   display: flex;
   flex-direction: column;
